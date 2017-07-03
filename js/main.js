@@ -56,7 +56,7 @@ function start(){
       fs.unlinkSync(outputFile);
     }catch(e){}
 
-    if(!fs.fileExistSync(inputFile)){
+    if(inputFile == ""){
       alert("First choose a file");
     }else{
       channels = parseInt(document.getElementById("nchans").value);
