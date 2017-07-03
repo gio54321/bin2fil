@@ -21,9 +21,7 @@ var ampli = 0;
 var sampleRate = 0;
 var stopAt = 0;
 
-function setup(){
-  ctx = document.getElementById("graph").getContext("2d");
-
+function setupFilters(){
   irrFilters = [];
 
   for (var i=0; i<channels; i++){
@@ -59,13 +57,14 @@ function start(){
     if(inputFile == ""){
       alert("First choose a file");
     }else{
+      ctx = document.getElementById("graph").getContext("2d");
       channels = parseInt(document.getElementById("nchans").value);
       bufferSize = 2 * channels * 1000;
       buffer = new Buffer(bufferSize);
       fd = fs.openSync(inputFile, 'r');
       outputFile = document.getElementById("fil-file-input").value;
       writeHeader();
-      setup();
+      setupFilters();
       chunksProcessed = 0;
       frameCounter = 0;
       outputBuffer = new Uint8Array(bufferSize/2);
