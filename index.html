@@ -1,0 +1,102 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <script language="javascript" type="text/javascript" src="js/jquery.js"></script>
+  <!-- <script language="javascript" type="text/javascript" src="js/p5.js"></script> -->
+  <!-- <script language="javascript" type="text/javascript" src="js/roundslider.min.js"></script> -->
+  <script language="javascript" type="text/javascript" src="js/main.js"></script>
+
+  <!-- <link rel="stylesheet" type="text/css" href="css/roundslider.min.css" /> -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" type="text/css" href="css/style.css" />
+</head>
+
+<body>
+  <div id="content">
+    <div id="acq-param-section">
+      <div class="section-title">CONVERSION PARAMETERS</div>
+      <input type="number" class="num-input small-input" min="0" step="1" value="0" id="conv-start"/>
+      <span class="input-text">CONVStart (sec)</span>
+      <input type="number" class="num-input small-input" min="0" step="1" value="7200" id="conv-len"/>
+      <span class="input-text">CONVLength (sec)</span>
+      <input type="number" class="num-input small-input" min="0" step="0.1" value="2" id="ampli"/>
+      <span class="input-text">Ampli</span>
+      <div class="separator"></div>
+      <div id="filter-group">
+        <input type="number" class="num-input small-input filter-input" min="0" step="1" value="80" id="f-h"/>
+        <span class="input-text">FILT_H (Hz)</span>
+        <input type="number" class="num-input small-input filter-input" min="0" step="0.01" value="0.05" id="f-l"/>
+        <span class="input-text">FILT_L (Hz)</span>
+      </div>
+
+      <div class="separator"></div>
+      <input type="text" class="num-input large-input" value="B0329+54" id="source-name"/>
+      <span class="input-text">Source Name</span>
+      <input type="number" class="num-input large-input" min="0" step="0,01" value="543443.57" id="source-de"/>
+      <span class="input-text">Source DEC (ddmmss.s)</span>
+      <input type="number" class="num-input large-input" min="0" step="0,01" value="33259.37" id="source-ra"/>
+      <span class="input-text">Source RA (ddmmss.s)</span>
+      <input type="number" class="num-input large-input" min="0" step="0.1" value="422" id="center-freq"/>
+      <span class="input-text">Center Frequency (MHz)</span>
+      <select class="num-input large-input" id="sample-rate">
+        <option value="10000000">10MSPS (AirSpy)</option>
+        <option value="2400000">2.4MSPS (RTL-SDR)</option>
+      </select>
+      <span class="input-text">SR</span>
+      <input type="number" class="num-input large-input" min="0" step="0.01" value="0" id="sr-error"/>
+      <span class="input-text">SRerror (ppm)</span>
+      <select class="num-input large-input" id="ts-sample-rate">
+        <option value="1000">1KSPS</option>
+        <option value="2000" selected="true">2KSPS</option>
+        <option value="4000">4KSPS</option>
+      </select>
+      <span class="input-text">SR Time Series</span>
+      <select class="num-input large-input" id="nchans">
+        <option value="10">10</option>
+        <option value="25">25</option>
+        <option value="50" selected="true">50</option>
+        <option value="100">100</option>
+      </select>
+      <span class="input-text">Channels</span>
+
+    </div>
+
+    <div id="right">
+      <div id="spectrum-section">
+        <div class="section-title">SPECTRUM</div>
+        <div id="canvas-div"><canvas id="graph" width="300" height="130"></canvas></div>
+        <div id="frame-div"></div>
+      </div>
+
+      <div id="status-section">
+        <div class="section-title">STATUS</div>
+        <div class="num-input small-input" style="border:1px solid black; font-size:12px; line-height:15px; height:15px; padding-left:2px;" id="processed"></div>
+        <span class="input-text">Processed</span>
+        <div class="num-input small-input" style="border:1px solid black; font-size:12px; line-height:15px; height:15px; padding-left:2px;" id="%sat"></div>
+        <span class="input-text">%SAT</span>
+        <input type="button" id="reset-sat" value="RESET&#160; %SAT" onclick="resetSat()"/>
+      </div>
+    </div>
+
+
+
+    <div id="file-section">
+      <div id="bin-file-selector">
+        Select a .bin file<br />
+        <input type="file" class="file-select" id="bin-file-input" onchange="fileSelected()" accept=".bin"/>
+      </div>
+      <div id="file-select-center">
+        <i class="fa fa-play" onclick="start()" style="margin:20px 0 0 35px; cursor:pointer; transition:0.5s" id="start-button"></i>
+        <div id="mjd-visualizer">MJD time</div>
+      </div>
+      <div id="fil-file-selector" class="last">
+        Path to .fil file<br />
+        <input type="text" class="file-select" id="fil-file-input"/>
+      </div>
+
+    </div>
+
+  </div>
+
+</body>
+</html>
