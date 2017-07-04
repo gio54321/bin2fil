@@ -1,6 +1,6 @@
 # Bin2fil converter
 
-This is a simple routine that convert .bin files into filterbank format, writing also the header.
+This is a simple routine that converts .bin files into filterbank format, writing also the header.
 
 ### Prerequisites
 
