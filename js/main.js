@@ -23,7 +23,6 @@ var stopAt = 0;
 
 function setupFilters(){
   irrFilters = [];
-
   for (var i=0; i<channels; i++){
     iirCalculators[i] = {fil1:new Fili.CalcCascades(), fil2:new Fili.CalcCascades()};
 
@@ -67,6 +66,7 @@ function start(){
       setupFilters();
       chunksProcessed = 0;
       frameCounter = 0;
+      saturated = 0;
       outputBuffer = new Uint8Array(bufferSize/2);
       sampleRate = parseFloat(document.getElementById("ts-sample-rate").value);
       ampli = parseFloat(document.getElementById("ampli").value);
@@ -198,7 +198,7 @@ function fileSelected(){
   document.getElementById("fil-file-input").focus();
   document.getElementById("fil-file-input").setSelectionRange(inputFile.length, inputFile.length);
 
-  fd = fs.openSync(inputFile, 'r'); //'B2111+46_25_2K.bin'
+  fd = fs.openSync(inputFile, 'r');
 
   var stats = fs.statSync(inputFile);
   var mjdTime = ((Date.parse(stats.mtime) / 1000) / 86400) + 40587;
@@ -222,8 +222,8 @@ function readChunk(startAt){
     ampli = parseFloat(document.getElementById("ampli").value);
 
     for (var i=0; i<bufferSize/2; i++){
-      tmpVal = iirFilters[(i)%channels].fil2.singleStep(iirFilters[(i)%channels].fil1.singleStep(buffer.readInt16LE(i*2))) * ampli * 0.1 +128;
-      // alert(((channels-1-((i)%channels)) + Math.floor((i)/channels)*channels)*2);
+      tmpVal = iirFilters[(i)%channels].fil2.singleStep(iirFilters[(i)%channels].fil1.singleStep(buffer.readInt16LE(i*2))) * ampli * 0.1 + 128;
+
       if (tmpVal > 255){
         tmpVal = 255;
         saturated++;
@@ -234,15 +234,15 @@ function readChunk(startAt){
       }
       if (i<channels){
         ctx.beginPath();
-        ctx.arc(298-(i*2*(146/(channels-1))), 129 - tmpVal/2, 2, 0, 2*Math.PI);
+        ctx.arc(6+(i*2*(146/(channels-1))), 129 - tmpVal/2, 2, 0, 2*Math.PI);
         ctx.stroke();
       }
-      outputBuffer[i] = tmpVal;
+      outputBuffer[(channels-1-((i)%channels)) + Math.floor((i)/channels)*channels] = tmpVal;
     }
 
     fs.appendFileSync(outputFile, new Buffer(outputBuffer));
     document.getElementById("processed").innerHTML = frameCounter * (1000/sampleRate);
-    document.getElementById("%sat").innerHTML = (saturated / (chunksProcessed * (bufferSize / 4)) * 100).toFixed(3);
+    document.getElementById("%sat").innerHTML = (saturated / (chunksProcessed * (bufferSize / 2)) * 100).toFixed(3);
     frameCounter++;
     chunksProcessed++;
 
