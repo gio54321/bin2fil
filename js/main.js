@@ -49,10 +49,6 @@ function setupFilters(){
 
 function start(){
   if(!run){
-    try{
-      fs.unlinkSync(outputFile);
-    }catch(e){}
-
     if(inputFile == ""){
       alert("First choose a file");
     }else{
@@ -62,6 +58,9 @@ function start(){
       buffer = new Buffer(bufferSize);
       fd = fs.openSync(inputFile, 'r');
       outputFile = document.getElementById("fil-file-input").value;
+      try{
+        fs.unlinkSync(outputFile);
+      }catch(e){}
       writeHeader();
       setupFilters();
       chunksProcessed = 0;
