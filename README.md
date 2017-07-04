@@ -21,8 +21,6 @@ instead if you want to compile it you have to run:
 command not defined yet
 ```
 
-End with an example of getting some data out of the system or using it for a little demo
-
 ## Built With
 
 * [electron](https://github.com/electron/electron) - The framework to combine node.js and web languages
