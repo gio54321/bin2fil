@@ -15,11 +15,6 @@ if you don't want to compile the code you can simply run opening the terminal in
 npm start
 ```
 
-instead if you want to compile it you have to run:
-
-```
-command not defined yet
-```
 
 ## Built With
 
