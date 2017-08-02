@@ -39,6 +39,7 @@
       <input type="number" class="num-input large-input" min="0" step="0.1" value="422" id="center-freq"/>
       <span class="input-text">Center Frequency (MHz)</span>
       <select class="num-input large-input" id="sample-rate">
+        <option value="20000000">20MSPS (HackRF One)</option>
         <option value="10000000">10MSPS (AirSpy)</option>
         <option value="6000000">6MPS (AirSpy mini)</option>
         <option value="3000000">3MPS (AirSpy mini)</option>
@@ -89,8 +90,8 @@
         <input type="file" class="file-select" id="bin-file-input" onchange="fileSelected()" accept=".bin"/>
       </div>
       <div id="file-select-center">
-        <i class="fa fa-play" onclick="start()" style="margin:20px 0 0 35px; cursor:pointer; transition:0.5s" id="start-button"></i>
-        <div id="mjd-visualizer">MJD time</div>
+        <i class="fa fa-play" onclick="start()" style="margin:20px 0 0 35px; cursor:pointer; transition:0.5s" id="start-button"></i><br />
+        <input type="text" id="mjd-visualizer" />
       </div>
       <div id="fil-file-selector" class="last">
         Path to .fil file<br />

@@ -91,8 +91,7 @@ function writeHeader(){
   var Uint32Buffer = new Buffer(4);
   var doubleBuffer = new Buffer(8);
 
-  var stats = fs.statSync(inputFile);
-  var mjdTime = ((Date.parse(stats.mtime) / 1000) / 86400) + 40587;
+  var mjdTime = document.getElementById("mjd-visualizer").value;
 
   Uint32Buffer.writeUInt32LE(12, 0);
   fs.appendFileSync(outputFile, Uint32Buffer);
@@ -201,7 +200,7 @@ function fileSelected(){
 
   var stats = fs.statSync(inputFile);
   var mjdTime = ((Date.parse(stats.mtime) / 1000) / 86400) + 40587;
-  document.getElementById("mjd-visualizer").innerHTML = mjdTime.toFixed(3);
+  document.getElementById("mjd-visualizer").value = mjdTime.toFixed(5);
 
 }
 
