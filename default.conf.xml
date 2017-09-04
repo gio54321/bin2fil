@@ -1,0 +1,15 @@
+<default>
+  <conv-start>0</conv-start>
+  <conv-len>3600</conv-len>
+  <ampli>2</ampli>
+  <f-h>80</f-h>
+  <f-l>0.05</f-l>
+  <source-name>B0329+54</source-name>
+  <source-de>543443.57</source-de>
+  <source-ra>33259.37</source-ra>
+  <center-freq>422</center-freq>
+  <sample-rate>1</sample-rate>
+  <sr-error>0</sr-error>
+  <ts-sample-rate>1</ts-sample-rate>
+  <nchans>2</nchans>
+</default>

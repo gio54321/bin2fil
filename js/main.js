@@ -21,6 +21,29 @@ var ampli = 0;
 var sampleRate = 0;
 var stopAt = 0;
 
+fs.readFile("default.conf.xml", "utf-8", function(err, data){
+  if(err){
+    return console.log(err);
+  }
+  var parser = new DOMParser();
+  xmlDoc = parser.parseFromString(data, "text/xml");
+
+  document.getElementById("conv-start").value = xmlDoc.getElementsByTagName("conv-start")[0].childNodes[0].nodeValue;
+  document.getElementById("conv-len").value = xmlDoc.getElementsByTagName("conv-len")[0].childNodes[0].nodeValue;
+  document.getElementById("ampli").value = xmlDoc.getElementsByTagName("ampli")[0].childNodes[0].nodeValue;
+  document.getElementById("f-h").value = xmlDoc.getElementsByTagName("f-h")[0].childNodes[0].nodeValue;
+  document.getElementById("f-l").value = xmlDoc.getElementsByTagName("f-l")[0].childNodes[0].nodeValue;
+  document.getElementById("source-name").value = xmlDoc.getElementsByTagName("source-name")[0].childNodes[0].nodeValue;
+  document.getElementById("source-de").value = xmlDoc.getElementsByTagName("source-de")[0].childNodes[0].nodeValue;
+  document.getElementById("source-ra").value = xmlDoc.getElementsByTagName("source-ra")[0].childNodes[0].nodeValue;
+  document.getElementById("center-freq").value = xmlDoc.getElementsByTagName("center-freq")[0].childNodes[0].nodeValue;
+  document.getElementById("sample-rate").selectedIndex = xmlDoc.getElementsByTagName("sample-rate")[0].childNodes[0].nodeValue;
+  document.getElementById("sr-error").value = xmlDoc.getElementsByTagName("sr-error")[0].childNodes[0].nodeValue;
+  document.getElementById("ts-sample-rate").selectedIndex = xmlDoc.getElementsByTagName("ts-sample-rate")[0].childNodes[0].nodeValue;
+  document.getElementById("nchans").selectedIndex = xmlDoc.getElementsByTagName("nchans")[0].childNodes[0].nodeValue;
+
+});
+
 function setupFilters(){
   irrFilters = [];
   for (var i=0; i<channels; i++){
