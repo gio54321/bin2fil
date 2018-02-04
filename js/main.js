@@ -51,7 +51,7 @@ function setupFilters(){
 
     iirFilterCoeffs[i] = {fil1: iirCalculators[i].fil1.highpass({
         order: 1,
-        characteristic: 'butterworth',
+        characteristic: 'bessel',
         Fs: parseFloat(document.getElementById("ts-sample-rate").value),
         Fc: parseFloat(document.getElementById("f-l").value),
         gain: 1,
@@ -59,7 +59,7 @@ function setupFilters(){
       }),
       fil2:iirCalculators[i].fil2.lowpass({
           order: 3,
-          characteristic: 'butterworth',
+          characteristic: 'bessel',
           Fs: parseFloat(document.getElementById("ts-sample-rate").value),
           Fc:  parseFloat(document.getElementById("f-h").value),
           gain: 1,
