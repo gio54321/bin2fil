@@ -8,18 +8,13 @@ Make sure node.js and npm are installed on your machine and the executables dire
 This is a cross platform software working with electron so in theory it should work fine on all operative systems.
 
 ### Installing
-
-if you don't want to compile the code you can simply run opening the terminal in the code folder and run:
-
+```
+npm install
+```
+### Executing
 ```
 npm start
 ```
-
-
-## Built With
-
-* [electron](https://github.com/electron/electron) - The framework to combine node.js and web languages
-
 
 ## Authors
 

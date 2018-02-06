@@ -59,8 +59,8 @@ div#filter-group{
   border-radius:10px;
   border:1px solid black;
   float:left;
-  margin-left:25px;
   padding-right:25px;
+  margin:10px 0 10px 25px;
 }
 
 div.section-title{

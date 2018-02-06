@@ -10,5 +10,8 @@
   "license": "ISC",
   "devDependencies": {
     "electron-prebuilt": "^1.4.13"
+  },
+  "dependencies": {
+    "fili": "^2.0.1"
   }
 }
