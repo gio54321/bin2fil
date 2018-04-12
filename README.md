@@ -1,11 +1,11 @@
 # Bin2fil converter
 
-This is a simple routine that converts .bin files into filterbank format, writing also the header.
+This is a simple routine that converts .bin (that is a custom file format that stores samples from devices like AIRSPY or RTL-SDR) into filterbank format (that is a common format for pulsar signal elaboration and hunting used by [presto](https://github.com/scottransom/presto) and [sigproc](http://sigproc.sourceforge.net/)). It implements decimation control and the possibility to apply bessel and butterworth filters.
 
 ### Prerequisites
 
 Make sure node.js and npm are installed on your machine and the executables directory is in you PATH environment variable.
-This is a cross platform software working with electron so in theory it should work fine on all operative systems.
+This is a cross platform software working with electron so it should work fine on all OS.
 
 ### Installing
 ```
@@ -15,11 +15,6 @@ npm install
 ```
 npm start
 ```
-
-## Authors
-
-* **Giorgio Dell'Immagine**
-* **Andrea Dell'Immagine**
 
 ## Bugs and Issues
 
