@@ -2,6 +2,8 @@
 
 This is a simple routine that converts .bin (that is a custom file format that stores samples from devices like AIRSPY or RTL-SDR) into filterbank format (that is a common format for pulsar signal elaboration and hunting used by [presto](https://github.com/scottransom/presto) and [sigproc](http://sigproc.sourceforge.net/)). It implements decimation control and the possibility to apply bessel and butterworth filters.
 
+![Screenshot](screenshot.jpg)
+
 ### Prerequisites
 
 Make sure node.js and npm are installed on your machine and the executables directory is in you PATH environment variable.
