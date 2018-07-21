@@ -4,11 +4,15 @@
   "description": "a bin to filterbank converter",
   "main": "index.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "startauto": "electron ."
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "electron-prebuilt": "^1.4.13"
+  },
+  "dependencies": {
+    "fili": "^2.0.1"
   }
 }
