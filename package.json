@@ -4,7 +4,8 @@
   "description": "a bin to filterbank converter",
   "main": "index.js",
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "startauto": "electron ."
   },
   "author": "",
   "license": "ISC",

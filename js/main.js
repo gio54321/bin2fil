@@ -2,6 +2,7 @@ const fs = require("fs");
 const stream = require('stream');
 const Fili = require('fili');
 const util = require("util");
+const remote = require('electron').remote;
 
 var ctx, fd;
 var bufferSize = 0,
@@ -20,6 +21,9 @@ var chunksProcessed = 0;
 var ampli = 0;
 var sampleRate = 0;
 var stopAt = 0;
+var args = remote.getGlobal('sharedObject').prop1;
+var autoInputFile = "";
+var auto = false;
 
 fs.readFile("default.conf.xml", "utf-8", function(err, data){
   if(err){
@@ -41,6 +45,15 @@ fs.readFile("default.conf.xml", "utf-8", function(err, data){
   document.getElementById("sr-error").value = xmlDoc.getElementsByTagName("sr-error")[0].childNodes[0].nodeValue;
   document.getElementById("ts-sample-rate").selectedIndex = xmlDoc.getElementsByTagName("ts-sample-rate")[0].childNodes[0].nodeValue;
   document.getElementById("nchans").selectedIndex = xmlDoc.getElementsByTagName("nchans")[0].childNodes[0].nodeValue;
+  autoInputFile = xmlDoc.getElementsByTagName("filename")[0].childNodes[0].nodeValue;
+
+  console.log(args);
+  if (args[2] == "auto"){
+    console.log("auto mode");
+    auto = true;
+    fileSelected(autoInputFile);
+    start();
+  }
 
 });
 
@@ -106,6 +119,10 @@ function start(){
     clearInterval(intervalId);
     document.getElementById("start-button").className = "fa fa-play";
     run = false;
+    if (auto){
+      var window = remote.getCurrentWindow();
+      window.close();
+    }
   }
 
 }
@@ -214,8 +231,13 @@ function resetSat(){
   saturated = 0;
 }
 
-function fileSelected(){
-  inputFile = document.getElementById("bin-file-input").files[0].path;
+function fileSelected(filename){
+  if (filename == undefined){
+    inputFile = document.getElementById("bin-file-input").files[0].path;
+  } else {
+    inputFile = filename
+  }
+
   document.getElementById("fil-file-input").value = inputFile.slice(0,inputFile.length-4) + ".fil";
   document.getElementById("fil-file-input").focus();
   document.getElementById("fil-file-input").setSelectionRange(inputFile.length, inputFile.length);
@@ -226,7 +248,6 @@ function fileSelected(){
   console.log(stats);
   var mjdTime = (((Date.parse(stats.birthtime) / 1000) +  / 86400) + 40587;
   document.getElementById("mjd-visualizer").value = mjdTime.toFixed(5);
-
 }
 
 function readChunk(startAt){

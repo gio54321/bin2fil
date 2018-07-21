@@ -12,4 +12,7 @@
   <sr-error>0</sr-error>
   <ts-sample-rate>1</ts-sample-rate>
   <nchans>2</nchans>
+  <filename>C:\Users\Giorgio\Desktop\PulsarSW\08_11_2016_22_05.bin</filename>
+  <!--> MJD time: * means creation date <-->
+  <mjd>*<mjd>
 </default>
