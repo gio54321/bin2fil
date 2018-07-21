@@ -246,7 +246,7 @@ function fileSelected(filename){
 
   var stats = fs.statSync(inputFile);
   console.log(stats);
-  var mjdTime = (((Date.parse(stats.birthtime) / 1000) +  / 86400) + 40587;
+  var mjdTime = ((Date.parse(stats.birthtime) / 1000) / 86400) + 40587;
   document.getElementById("mjd-visualizer").value = mjdTime.toFixed(5);
 }
 
