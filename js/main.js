@@ -71,8 +71,8 @@ function setupFilters(){
         preGain: false
       }),
       fil2:iirCalculators[i].fil2.lowpass({
-          order: 3,
-          characteristic: 'butterworth',
+          order: (parseInt(document.getElementById("filter-type").value))?10:3,
+          characteristic: (parseInt(document.getElementById("filter-type").value))?'bessel':'butterworth',
           Fs: parseFloat(document.getElementById("ts-sample-rate").value),
           Fc:  parseFloat(document.getElementById("f-h").value),
           gain: 1,
@@ -108,7 +108,7 @@ function start(){
       document.getElementById("start-button").className = "fa fa-stop";
       var startAt = Math.ceil(parseFloat(document.getElementById("conv-start").value) * sampleRate * channels * 2);
       stopAt = (parseFloat(document.getElementById("conv-len").value) * sampleRate * channels * 2) / bufferSize;
-      console.log(startAt);
+      //console.log("startAt: " + startAt);
 
       readChunk(startAt);
       intervalId = setInterval(readChunk, 1);
@@ -131,7 +131,8 @@ function writeHeader(){
   var Uint32Buffer = new Buffer(4);
   var doubleBuffer = new Buffer(8);
 
-  var mjdTime = document.getElementById("mjd-visualizer").value;
+  var startAt = Math.ceil(parseFloat(document.getElementById("conv-start").value) * sampleRate * channels * 2);
+  var mjdTime = document.getElementById("mjd-visualizer").value + startAt;
 
   Uint32Buffer.writeUInt32LE(12, 0);
   fs.appendFileSync(outputFile, Uint32Buffer);
@@ -244,12 +245,27 @@ function fileSelected(filename){
   fd = fs.openSync(inputFile, 'r');
 
   var stats = fs.statSync(inputFile);
-  var mjdTime = ((Date.parse(stats.mtime) / 1000) / 86400) + 40587;
+  console.log(stats);
+  var mjdTime = (((Date.parse(stats.birthtime) / 1000) +  / 86400) + 40587;
   document.getElementById("mjd-visualizer").value = mjdTime.toFixed(5);
 }
 
 function readChunk(startAt){
-  if ((read = fs.readSync(fd, buffer, 0, bufferSize, (startAt == 0)?null:startAt)) !== 0) {
+	if(startAt){
+		var seconds = startAt / sampleRate / channels / 2;
+		console.log("skipping (s): " + seconds);
+		var tmpBuffer = new Buffer(sampleRate * channels * 2);
+
+		for (var i=0; i<seconds; i++){
+			if ((read = fs.readSync(fd, tmpBuffer, 0, sampleRate * channels * 2 , null)) == 0) {
+				alert("conv start out of range!");
+				return;
+			}
+		}
+		return;
+	}
+
+	if ((read = fs.readSync(fd, buffer, 0, bufferSize, null)) !== 0) {
     ctx.fillStyle="#FFFFFF";
     ctx.fillRect(0,0,600,300);
     ctx.fillStyle="#000000";
