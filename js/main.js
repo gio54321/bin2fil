@@ -24,6 +24,7 @@ var stopAt = 0;
 var args = remote.getGlobal('sharedObject').prop1;
 var autoInputFile = "";
 var auto = false;
+var filesize = 0;
 
 fs.readFile("default.conf.xml", "utf-8", function(err, data){
   if(err){
@@ -46,6 +47,7 @@ fs.readFile("default.conf.xml", "utf-8", function(err, data){
   document.getElementById("ts-sample-rate").selectedIndex = xmlDoc.getElementsByTagName("ts-sample-rate")[0].childNodes[0].nodeValue;
   document.getElementById("nchans").selectedIndex = xmlDoc.getElementsByTagName("nchans")[0].childNodes[0].nodeValue;
   autoInputFile = xmlDoc.getElementsByTagName("filename")[0].childNodes[0].nodeValue;
+	document.getElementById("filter-type").selectedIndex = xmlDoc.getElementsByTagName("filter-type")[0].childNodes[0].nodeValue;
 
   console.log(args);
   if (args[2] == "auto"){
@@ -90,6 +92,8 @@ function start(){
     }else{
       ctx = document.getElementById("graph").getContext("2d");
       channels = parseInt(document.getElementById("nchans").value);
+      sampleRate = parseFloat(document.getElementById("ts-sample-rate").value);
+      ampli = parseFloat(document.getElementById("ampli").value);
       bufferSize = 2 * channels * 1000;
       buffer = new Buffer(bufferSize);
       fd = fs.openSync(inputFile, 'r');
@@ -103,12 +107,9 @@ function start(){
       frameCounter = 0;
       saturated = 0;
       outputBuffer = new Uint8Array(bufferSize/2);
-      sampleRate = parseFloat(document.getElementById("ts-sample-rate").value);
-      ampli = parseFloat(document.getElementById("ampli").value);
       document.getElementById("start-button").className = "fa fa-stop";
       var startAt = Math.ceil(parseFloat(document.getElementById("conv-start").value) * sampleRate * channels * 2);
       stopAt = (parseFloat(document.getElementById("conv-len").value) * sampleRate * channels * 2) / bufferSize;
-      //console.log("startAt: " + startAt);
 
       readChunk(startAt);
       intervalId = setInterval(readChunk, 1);
@@ -132,7 +133,8 @@ function writeHeader(){
   var doubleBuffer = new Buffer(8);
 
   var startAt = Math.ceil(parseFloat(document.getElementById("conv-start").value) * sampleRate * channels * 2);
-  var mjdTime = document.getElementById("mjd-visualizer").value + startAt;
+  var recordinglength = filesize/(sampleRate * channels * 2);
+  var mjdTime = document.getElementById("mjd-visualizer").value - recordinglength/86400 + parseFloat(document.getElementById("conv-start").value)/86400;
 
   Uint32Buffer.writeUInt32LE(12, 0);
   fs.appendFileSync(outputFile, Uint32Buffer);
@@ -245,15 +247,14 @@ function fileSelected(filename){
   fd = fs.openSync(inputFile, 'r');
 
   var stats = fs.statSync(inputFile);
-  console.log(stats);
-  var mjdTime = ((Date.parse(stats.birthtime) / 1000) / 86400) + 40587;
+  var mjdTime = ((Date.parse(stats.mtime.toUTCString()) / 1000) / 86400) + 40587;
   document.getElementById("mjd-visualizer").value = mjdTime.toFixed(5);
+  filesize = stats.size;
 }
 
 function readChunk(startAt){
 	if(startAt){
 		var seconds = startAt / sampleRate / channels / 2;
-		console.log("skipping (s): " + seconds);
 		var tmpBuffer = new Buffer(sampleRate * channels * 2);
 
 		for (var i=0; i<seconds; i++){
